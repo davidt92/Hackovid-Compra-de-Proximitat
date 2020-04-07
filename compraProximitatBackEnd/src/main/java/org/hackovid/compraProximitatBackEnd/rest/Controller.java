@@ -1,13 +1,10 @@
 package org.hackovid.compraProximitatBackEnd.rest;
 
 import com.google.gson.Gson;
-import org.hackovid.compraProximitatBackEnd.Test.Billionaires;
-import org.hackovid.compraProximitatBackEnd.Test.TestObject;
-import org.hackovid.compraProximitatBackEnd.database.H2Access;
+import org.hackovid.CompraProximitatDto.dto.UserDto;
+import org.hackovid.compraProximitatBackEnd.database.UserAccess;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,21 +12,27 @@ import java.util.List;
 public class Controller
 {
     @Autowired
-    private H2Access dbAccess;
+    private UserAccess dbAccess;
 
-    @RequestMapping(value = "/personas", method = RequestMethod.GET)
-    public String index()
+    @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+    public String getAllUsers()
     {
         Gson gson = new Gson();
-        TestObject test = new TestObject(3);
+        List<UserDto> list = dbAccess.getAllUsers();
+        return gson.toJson(list);
+    }
 
-        List<Billionaires> list = dbAccess.findAllBillionaires();
+    @PostMapping("/adduser")
+    public UserDto addUser(@RequestBody UserDto userDto)
+    {
+        dbAccess.addUser(userDto);
+        return userDto;
+    }
 
-        for (Billionaires bill : list)
-        {
-            System.out.println(bill.getFirstName()+" "+bill.getLastName());
-        }
 
-        return gson.toJson(test);
+    @RequestMapping(value = "/checkUserPassword/{username}/{passwordHash}", method = RequestMethod.GET)
+    public String checkUserPassword(@PathVariable String username, @PathVariable String passwordHash)
+    {
+        return dbAccess.checkPassword(username, passwordHash);
     }
 }
