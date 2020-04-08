@@ -22,7 +22,7 @@ public class Controller
         return gson.toJson(list);
     }
 
-    @PostMapping("/adduser")
+    @RequestMapping(value = "/adduser", method = RequestMethod.GET)
     public UserDto addUser(@RequestBody UserDto userDto)
     {
         dbAccess.addUser(userDto);
