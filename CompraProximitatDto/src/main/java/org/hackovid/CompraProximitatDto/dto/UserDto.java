@@ -3,6 +3,7 @@ package org.hackovid.CompraProximitatDto.dto;
 public class UserDto
 {
     int id;
+    int userType;
     String userName;
     String firstName;
     String lastName;
@@ -16,8 +17,9 @@ public class UserDto
     {
     }
 
-    public UserDto(String userName, String firstName, String lastName, String direction, String city, String postalCode, String passwordHash, String email)
+    public UserDto(int userType, String userName, String firstName, String lastName, String direction, String city, String postalCode, String passwordHash, String email)
     {
+        this.userType = userType;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -116,5 +118,15 @@ public class UserDto
     public void setEmail(String email)
     {
         this.email = email;
+    }
+
+    public int getUserType()
+    {
+        return userType;
+    }
+
+    public void setUserType(int userType)
+    {
+        this.userType = userType;
     }
 }
