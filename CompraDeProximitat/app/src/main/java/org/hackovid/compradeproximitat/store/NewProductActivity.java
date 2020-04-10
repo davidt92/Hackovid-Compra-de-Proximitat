@@ -107,10 +107,6 @@ public class NewProductActivity extends AppCompatActivity
                     this.openCamera();
                 }
             }
-            else
-            {
-
-            }
         });
 
         addProduct.setOnClickListener( v -> {
