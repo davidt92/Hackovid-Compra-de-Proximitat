@@ -1,5 +1,7 @@
 package org.hackovid.compraProximitatBackEnd.database;
 
+import com.google.gson.Gson;
+import org.hackovid.CompraProximitatDto.dto.GlobalVariablesDto;
 import org.hackovid.CompraProximitatDto.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,8 +16,10 @@ import java.util.logging.Logger;
 @Repository
 public class UserAccess
 {
-    private String tableName = "users_table";
+    private String tableName = "USERS_TABLE";
     private final static Logger LOGGER = Logger.getLogger(UserAccess.class.getName());
+
+    private Gson gson = new Gson();
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -31,25 +35,25 @@ public class UserAccess
 
         if (userDtoList.size() == 0)
         {
-            return "User does not exist!";
+            return GlobalVariablesDto.USERNAME_DOES_NOT_EXIST;
         }
         else
         {
             if (userDtoList.get(0).getPasswordHash().equals(passwordHash))
             {
-                return String.valueOf(true);
+                return gson.toJson(userDtoList.get(0));
             }
             else
             {
-                return String.valueOf(false);
+                return GlobalVariablesDto.WRONG_PASSWORD;
             }
         }
     }
 
     public int addUser(UserDto userDto)
     {
-        return jdbcTemplate.update("INSERT INTO " + tableName + " (username, first_name, last_name, direction, city, postal_code, password_hash, email)"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);", userDto.getUserName(), userDto.getFirstName(), userDto.getLastName(), userDto.getDirection(), userDto.getCity(), userDto.getPostalCode(), userDto.getPasswordHash(), userDto.getEmail());
+        return jdbcTemplate.update("INSERT INTO " + tableName + " (user_type, username, first_name, last_name, direction, city, postal_code, password_hash, email)"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", userDto.getUserType(), userDto.getUserName(), userDto.getFirstName(), userDto.getLastName(), userDto.getDirection(), userDto.getCity(), userDto.getPostalCode(), userDto.getPasswordHash(), userDto.getEmail());
     }
 
 
@@ -67,6 +71,15 @@ public class UserAccess
             catch (Exception e)
             {
                 LOGGER.info("id does not exist as column in DB response");
+            }
+
+            try
+            {
+                userDto.setUserType(rs.getInt("user_type"));
+            }
+            catch (Exception e)
+            {
+                LOGGER.info("user_type does not exist as column in DB response");
             }
 
             try
