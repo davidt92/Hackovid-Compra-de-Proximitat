@@ -32,12 +32,17 @@ public class ProductsDB
 
     public List<ProductDto> getAllProductsFromPostalCode(String postalCode)
     {
-        return jdbcTemplate.query("Select * from " + tableName + "where postal_code = "+postalCode, new ProductDtoRowMapper());
+        return jdbcTemplate.query("Select product_id, seller_username, product_name, description, state, postal_code from " + tableName + " where postal_code = '"+postalCode+"'", new ProductDtoRowMapper());
     }
 
     public List<ProductDto> getAllProductsFromUsername(String userName)
     {
-        return jdbcTemplate.query("Select * from " + tableName + "where seller_username = "+userName, new ProductDtoRowMapper());
+        return jdbcTemplate.query("Select product_id, seller_username, product_name, description, state, postal_code from " + tableName + " where seller_username = '"+userName+"'", new ProductDtoRowMapper());
+    }
+
+    public byte[] getImageFromId(String id)
+    {
+        return jdbcTemplate.query("Select * from " + tableName + " where product_id = '"+id+"'", new ProductDtoRowMapper()).get(0).getImage();
     }
 
     class ProductDtoRowMapper implements RowMapper<ProductDto>

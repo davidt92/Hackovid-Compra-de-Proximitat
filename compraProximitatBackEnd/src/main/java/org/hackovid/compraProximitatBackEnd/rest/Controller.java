@@ -6,8 +6,17 @@ import org.hackovid.CompraProximitatDto.dto.UserDto;
 import org.hackovid.compraProximitatBackEnd.database.ProductsDB;
 import org.hackovid.compraProximitatBackEnd.database.UserAccess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.support.ServletContextResource;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -55,6 +64,13 @@ public class Controller
         return productDto;
     }
 
+    @RequestMapping(value = "/image/{id}", method = RequestMethod.GET, produces = "image/jpg")
+    public @ResponseBody byte[] getImage(@PathVariable String id) throws IOException
+    {
+        System.out.println("Get Image: " + id);
+        return productsDB.getImageFromId(id);
+    }
+
     @RequestMapping(value = "/getproductspostalcode/{postalcode}", method = RequestMethod.GET)
     public List<ProductDto> getProductsPostalCode(@PathVariable String postalcode)
     {
@@ -75,7 +91,7 @@ public class Controller
     public List<ProductDto> getProductsUserName(@PathVariable String username)
     {
         List<ProductDto> productDtoList = null;
-
+        System.out.println("Get Products username");
         try
         {
             productDtoList = productsDB.getAllProductsFromUsername(username);
@@ -85,7 +101,10 @@ public class Controller
             System.out.println(e);
         }
         return productDtoList;
+        /*Gson gson = new Gson();
+        return gson.toJson(productDtoList);*/
     }
+
 
 
     @RequestMapping(value = "/checkUserPassword/{username}/{passwordHash}", method = RequestMethod.GET)
