@@ -91,7 +91,6 @@ public class Controller
     public List<ProductDto> getProductsUserName(@PathVariable String username)
     {
         List<ProductDto> productDtoList = null;
-        System.out.println("Get Products username");
         try
         {
             productDtoList = productsDB.getAllProductsFromUsername(username);
@@ -101,8 +100,6 @@ public class Controller
             System.out.println(e);
         }
         return productDtoList;
-        /*Gson gson = new Gson();
-        return gson.toJson(productDtoList);*/
     }
 
 
