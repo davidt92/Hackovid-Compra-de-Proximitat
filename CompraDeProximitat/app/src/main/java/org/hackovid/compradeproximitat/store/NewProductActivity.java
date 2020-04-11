@@ -2,11 +2,13 @@ package org.hackovid.compradeproximitat.store;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -28,11 +30,11 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hackovid.CompraProximitatDto.dto.ProductDto;
 import org.hackovid.compradeproximitat.GlobalVariables.GlobalVariables;
 import org.hackovid.compradeproximitat.R;
 import org.hackovid.compradeproximitat.Utilities;
+import org.hackovid.compradeproximitat.product.StoreAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,10 +45,12 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NewProductActivity extends AppCompatActivity
 {
-    private static Logger LOGGER = LogManager.getLogger(NewProductActivity.class);
+    Logger LOGGER = Logger.getLogger(NewProductActivity.class.getName());
 
     private Gson gson = new Gson();
     private RequestQueue requestQueue;
@@ -66,6 +70,7 @@ public class NewProductActivity extends AppCompatActivity
 
     Uri image_uri;
     private int IMAGE_CAPTURE_CODE = 1001;
+    private int PICK_IMAGE = 1002;
 
     private boolean could_add_product = true;
 
@@ -73,10 +78,14 @@ public class NewProductActivity extends AppCompatActivity
     private String city;
     private String userName;
 
+    private  Bitmap bitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        LOGGER.setLevel(Level.INFO);
+
         setContentView(R.layout.activity_new_product);
 
         captureButton = findViewById(R.id.capture_image_button);
@@ -109,7 +118,8 @@ public class NewProductActivity extends AppCompatActivity
             }
         });
 
-        addProduct.setOnClickListener( v -> {
+        addProduct.setOnClickListener( v ->
+        {
             this.addProduct();
         });
 
@@ -165,11 +175,17 @@ public class NewProductActivity extends AppCompatActivity
             executorService.submit(()->{
                 try
                 {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    imageByteArray = byteArrayOutputStream .toByteArray();
-                    could_add_product = true;
+                    if (image_uri != null)
+                    {
+                        System.out.println("Image uri: " + image_uri);
+                        LOGGER.info("Start processing image");
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                        imageByteArray = byteArrayOutputStream .toByteArray();
+                        could_add_product = true;
+                        System.out.println("End processing image");
+                    }
                 }
                 catch (IOException e)
                 {
@@ -187,11 +203,18 @@ public class NewProductActivity extends AppCompatActivity
 
         System.out.println("Adding product");
         while (could_add_product==false);
-
+        LOGGER.info("Start Adding product");
 
         String url = GlobalVariables.server + "/addproduct/";
 
         ProductDto productDto = new ProductDto(userName, productName.getText().toString(), description.getText().toString(), imageByteArray, GlobalVariables.PRODUCT_AVALIABLE, postalCode);
+
+        StoreAdapter storeAdapter = StoreAdapter.getStoreAdapter();
+
+        if (storeAdapter != null)
+        {
+            storeAdapter.addProduct(productDto);
+        }
 
         try
         {
@@ -202,14 +225,16 @@ public class NewProductActivity extends AppCompatActivity
                         progress.dismiss();
                         finish();
                     },
-                    error -> {System.out.println(error);} );
+                    error -> {
+                Toast.makeText(this, "Hi ha hagut un error en el servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();} );
 
             // Add the request to the RequestQueue.
             requestQueue.add(jsonRequest);
         }
         catch (JSONException e)
         {
-            LOGGER.error("Error parsing object to JSONObject", e);
+            LOGGER.info("Error parsing object to JSONObject" + e);
             e.printStackTrace();
         }
     }

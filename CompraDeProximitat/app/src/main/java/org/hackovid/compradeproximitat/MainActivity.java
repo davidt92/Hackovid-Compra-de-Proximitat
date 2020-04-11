@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -95,7 +96,8 @@ public class MainActivity extends AppCompatActivity
                     System.out.println(response);
                     activity.onCheckPassword(response);
                 },
-                error -> System.out.println("That didn't work!"+error));
+                error -> {System.out.println("That didn't work!"+error);
+                    Toast.makeText(this, "Hi ha hagut un error en el servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();});
         // Add the request to the RequestQueue.
         requestQueue.add(stringRequest);
 

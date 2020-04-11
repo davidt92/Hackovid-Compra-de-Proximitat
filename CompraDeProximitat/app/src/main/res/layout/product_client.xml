@@ -43,19 +43,5 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
- <!--       <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/description"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="-70dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="2dp"
-            android:layout_toEndOf="@+id/description"
-            android:text="Line 222"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />-->
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
