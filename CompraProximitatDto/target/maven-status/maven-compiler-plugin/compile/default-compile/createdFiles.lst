@@ -1,1 +1,5 @@
+org\hackovid\CompraProximitatDto\dto\ProductBoughtDto.class
+org\hackovid\CompraProximitatDto\dto\Utilities.class
+org\hackovid\CompraProximitatDto\dto\GlobalVariablesDto.class
+org\hackovid\CompraProximitatDto\dto\ProductDto.class
 org\hackovid\CompraProximitatDto\dto\UserDto.class
