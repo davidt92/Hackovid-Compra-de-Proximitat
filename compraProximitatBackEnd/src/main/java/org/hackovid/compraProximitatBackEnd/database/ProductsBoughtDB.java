@@ -50,6 +50,11 @@ public class ProductsBoughtDB
         }
     }
 
+    public int deleteBoughtProduct(String generatedCode)
+    {
+        return jdbcTemplate.update("DELETE FROM " + tableName + " WHERE generated_code = '" + generatedCode +"'");
+    }
+
 
     class ProductBoughtRowMapper implements RowMapper<ProductBoughtDto>
     {

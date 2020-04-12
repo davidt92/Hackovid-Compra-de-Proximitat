@@ -144,4 +144,11 @@ public class Controller
     {
         return productsBoughtDB.getProductBoughtByUsername(username);
     }
+
+    @RequestMapping(value = "/deleteboughtproduct/{generatedCode}", method = RequestMethod.GET)
+    public String deleteProduct(@PathVariable String generatedCode)
+    {
+        System.out.println("Delete bought product");
+        return String.valueOf(productsBoughtDB.deleteBoughtProduct(generatedCode));
+    }
 }
