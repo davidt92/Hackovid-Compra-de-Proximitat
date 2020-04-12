@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".client.buyedProducts"></activity>
+        <activity android:name=".client.QRCodeActivity"></activity>
+        <activity android:name=".client.BoughtProductsActivity" />
         <activity android:name=".store.NewProductActivity" />
 
         <meta-data

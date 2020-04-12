@@ -1,5 +1,6 @@
 package org.hackovid.compradeproximitat.product;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.hackovid.CompraProximitatDto.dto.ProductDto;
@@ -26,13 +28,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
     private List<Bitmap> bitmapList;
 
     static StoreAdapter storeAdapter;
+    static Activity activity;
 
 
-    public static class StoreViewHolder extends RecyclerView.ViewHolder
+    public static class StoreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         public ImageView image;
         public TextView product;
         public TextView description;
+        public ProductDto productDto;
 
         public StoreViewHolder(@NonNull View itemView)
         {
@@ -40,7 +44,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
             image = itemView.findViewById(R.id.imageView1);
             product = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
+        }
 
+        @Override
+        public void onClick(View v)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage("Comprar aquesta promoció:")
+                    .setTitle("Comprar"+product);
         }
     }
 

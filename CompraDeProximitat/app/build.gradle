@@ -43,6 +43,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     annotationProcessor 'org.apache.logging.log4j:log4j-core:2.3'
     implementation 'com.google.android.gms:play-services-location:11.6.0'
     testImplementation 'junit:junit:4.12'

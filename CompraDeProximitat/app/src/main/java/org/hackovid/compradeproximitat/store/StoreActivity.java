@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -80,6 +81,7 @@ public class StoreActivity extends AppCompatActivity
         userName = intent.getStringExtra(GlobalVariables.USERNAME);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar); // setting toolbar is important before calling getSupportActionBar()
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Botiga de "+userName);

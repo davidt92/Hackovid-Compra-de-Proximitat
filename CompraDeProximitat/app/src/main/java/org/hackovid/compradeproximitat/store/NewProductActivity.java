@@ -74,6 +74,8 @@ public class NewProductActivity extends AppCompatActivity
 
     private boolean could_add_product = true;
 
+    private boolean image_added = false;
+
     private String postalCode;
     private String city;
     private String userName;
@@ -169,6 +171,7 @@ public class NewProductActivity extends AppCompatActivity
         if (resultCode == RESULT_OK)
         {
             could_add_product = false;
+            image_added = true;
             System.out.println("Capture correct");
             captureButton.setText("Fotografia afegida correctament");
             //Toast.makeText(this, "El botó de afegir producte s'habilitara cuan s'haigi carregat la imatge", Toast.LENGTH_SHORT).show();
@@ -205,37 +208,44 @@ public class NewProductActivity extends AppCompatActivity
         while (could_add_product==false);
         LOGGER.info("Start Adding product");
 
-        String url = GlobalVariables.server + "/addproduct/";
-
-        ProductDto productDto = new ProductDto(userName, productName.getText().toString(), description.getText().toString(), imageByteArray, GlobalVariables.PRODUCT_AVALIABLE, postalCode);
-
-        StoreAdapter storeAdapter = StoreAdapter.getStoreAdapter();
-
-        if (storeAdapter != null)
+        if (image_added == false)
         {
-            storeAdapter.addProduct(productDto);
+            Toast.makeText(this, "Es obligatori afegir una fotografia", Toast.LENGTH_SHORT).show();
         }
-
-        try
+        else
         {
-            JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(gson.toJson(productDto)),
-                    response ->
-                    {
-                        System.out.println(response);
-                        progress.dismiss();
-                        finish();
-                    },
-                    error -> {
-                Toast.makeText(this, "Hi ha hagut un error en el servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();
-                        progress.dismiss();} );
+            String url = GlobalVariables.server + "/addproduct/";
 
-            // Add the request to the RequestQueue.
-            requestQueue.add(jsonRequest);
-        }
-        catch (JSONException e)
-        {
-            LOGGER.info("Error parsing object to JSONObject" + e);
-            e.printStackTrace();
+            ProductDto productDto = new ProductDto(userName, productName.getText().toString(), description.getText().toString(), imageByteArray, GlobalVariables.PRODUCT_AVALIABLE, postalCode);
+
+            StoreAdapter storeAdapter = StoreAdapter.getStoreAdapter();
+
+            if (storeAdapter != null)
+            {
+                storeAdapter.addProduct(productDto);
+            }
+
+            try
+            {
+                JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(gson.toJson(productDto)),
+                        response ->
+                        {
+                            System.out.println(response);
+                            progress.dismiss();
+                            finish();
+                        },
+                        error -> {
+                            Toast.makeText(this, "Hi ha hagut un error en el servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();
+                            progress.dismiss();} );
+
+                // Add the request to the RequestQueue.
+                requestQueue.add(jsonRequest);
+            }
+            catch (JSONException e)
+            {
+                LOGGER.info("Error parsing object to JSONObject" + e);
+                e.printStackTrace();
+            }
         }
     }
 }
