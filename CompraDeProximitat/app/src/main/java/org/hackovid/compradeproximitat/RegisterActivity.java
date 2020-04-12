@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -106,6 +107,10 @@ public class RegisterActivity extends AppCompatActivity
                         email.getText().toString());
                 this.register(userDto);
             }
+            else
+            {
+                Toast.makeText(this, "El usuari i la contrasenya no coincideixen", Toast.LENGTH_SHORT).show();
+            }
 
         });
     }
@@ -128,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity
             JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(gson.toJson(userDto)),
                     response ->
                     {
+                        Toast.makeText(this, "Usuari registrat correctament", Toast.LENGTH_SHORT).show();
                         System.out.println(response);
                         finish();
                     },

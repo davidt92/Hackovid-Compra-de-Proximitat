@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
                     activity.onCheckPassword(response);
                 },
                 error -> {System.out.println("That didn't work!"+error);
-                    Toast.makeText(this, "Hi ha hagut un error en el servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();});
+                    Toast.makeText(this, "Hi ha hagut un error en el servidor, torna-ho a intentar més tard", Toast.LENGTH_SHORT).show();});
         // Add the request to the RequestQueue.
         requestQueue.add(stringRequest);
 

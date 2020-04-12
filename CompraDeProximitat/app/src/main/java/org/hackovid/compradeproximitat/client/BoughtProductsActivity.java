@@ -55,8 +55,8 @@ public class BoughtProductsActivity extends AppCompatActivity
 
     private void getProductsBoughtForUser(String username)
     {
-        ProgressDialog progress = ProgressDialog.show(this, "Carregant Productes Comprats",
-                "Siusplau esperi", true);
+        ProgressDialog progress = ProgressDialog.show(this, "Carregant Productes/Serveis Comprats",
+                "Sisplau esperi", true);
 
         ObjectMapper mapper = new ObjectMapper();
         String url = GlobalVariables.server + "/productsboughtbyuser/" + username;
@@ -82,7 +82,8 @@ public class BoughtProductsActivity extends AppCompatActivity
                     }
                 },
                 error -> {System.out.println("That didn't work!"+error);
-                    Toast.makeText(this, "Hi ha hagut un error en obtenir els productes del servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();});
+                    progress.dismiss();
+                    Toast.makeText(this, "Hi ha hagut un error en obtenir els productes/serveis del servidor, torna-ho a intentar més tard", Toast.LENGTH_SHORT).show();});
         // Add the request to the RequestQueue.
 
         requestQueue.add(stringRequest);

@@ -76,7 +76,7 @@ public class ClientActivity extends AppCompatActivity
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar); // setting toolbar is important before calling getSupportActionBar()
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Productes oferts a " + city);
+        actionBar.setTitle("Productes/Serveis oferts a " + city);
 
         this.getProductsFromPostalCode(postalCode);
 
@@ -85,8 +85,8 @@ public class ClientActivity extends AppCompatActivity
     private void getProductsFromPostalCode(String postalCode)
     {
 
-        ProgressDialog progress = ProgressDialog.show(this, "Carregant Productes",
-                "Siusplau esperi", true);
+        ProgressDialog progress = ProgressDialog.show(this, "Carregant Productes/Serveis",
+                "Sisplau esperi", true);
 
         ObjectMapper mapper = new ObjectMapper();
         String url = GlobalVariables.server + "/getproductspostalcode/" + postalCode;
@@ -108,7 +108,7 @@ public class ClientActivity extends AppCompatActivity
                     }
                 },
                 error -> {System.out.println("That didn't work!"+error);
-                    Toast.makeText(this, "Hi ha hagut un error en obtenir els productes del servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();});
+                    Toast.makeText(this, "Hi ha hagut un error en obtenir els productes/serveis del servidor, torna-ho a intentar mes tard", Toast.LENGTH_SHORT).show();});
         // Add the request to the RequestQueue.
 
         requestQueue.add(stringRequest);

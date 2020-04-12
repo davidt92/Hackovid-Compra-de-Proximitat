@@ -92,11 +92,11 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.StoreViewH
                 }
 
             });
-            builder.setNegativeButton("Cançelar", (dialog, id) ->
+            builder.setNegativeButton("Cancel·lar", (dialog, id) ->
             {
                 // User cancelled the dialog
             });
-            builder.setMessage("Obtenir aquesta promoció:")
+            builder.setMessage("Obtenir aquests producte/servei")
                     .setTitle("Obtenir "+product.getText().toString());
 
             AlertDialog dialog = builder.create();

@@ -66,8 +66,6 @@ public class NewProductActivity extends AppCompatActivity
     private final int PERMISSION_CODE = 1000;
     private byte[] imageByteArray;
 
-    private Timer timer = new Timer();
-
     Uri image_uri;
     private int IMAGE_CAPTURE_CODE = 1001;
     private int PICK_IMAGE = 1002;
@@ -201,7 +199,7 @@ public class NewProductActivity extends AppCompatActivity
 
     private void addProduct()
     {
-        ProgressDialog progress = ProgressDialog.show(this, "Siusplau esperi",
+        ProgressDialog progress = ProgressDialog.show(this, "Sisplau esperi",
                 "Afegint producte", true);
 
         System.out.println("Adding product");
@@ -227,7 +225,7 @@ public class NewProductActivity extends AppCompatActivity
 
             try
             {
-                JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url,new JSONObject(gson.toJson(productDto)),
+                JsonRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(gson.toJson(productDto)),
                         response ->
                         {
                             System.out.println(response);
